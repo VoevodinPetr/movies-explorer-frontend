@@ -4,7 +4,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 function MoviesCardList() {
   return (
     <>
-      <ul className="movie-card-list">
+      <ul className="movie-card-list section2">
         <MoviesCard />
       </ul>
     </>

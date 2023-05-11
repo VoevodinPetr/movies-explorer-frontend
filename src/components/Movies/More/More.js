@@ -2,11 +2,11 @@ import './More.css';
 
 function More() {
     return (
-        <section className="more">
-        <button className="more__button" type="button">
+        <section className="more section2">
+        <button className="more__button hover-button" type="button">
           Ещё
         </button>
-      </section>
+      </section> 
     )
 }
 

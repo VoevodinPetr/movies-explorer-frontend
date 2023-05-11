@@ -18,11 +18,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/signin" element={<Login />} />
-        <Route path="*" element={<Page404/>} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </div>
-
-
   );
 }
 

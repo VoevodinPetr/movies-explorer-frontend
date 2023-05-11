@@ -14,11 +14,7 @@
 }
 
 .content {
-  max-width: 1280px;
   min-width: 320px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
 }
 
 .hover-link:hover {
@@ -46,5 +42,21 @@
 @media (max-width: 525px) {
   .section {
     padding-inline: 14px;
+  }
+}
+
+.section2 {
+  padding-inline: 70px;
+}
+
+@media (max-width: 768px) {
+  .section2 {
+    padding-inline: 30px;
+  }
+}
+
+@media (max-width: 525px) {
+  .section2 {
+    padding-inline: 10px;
   }
 }

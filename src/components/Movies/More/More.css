@@ -1,5 +1,4 @@
 .more {
-  padding-inline: 70px;
   background: #202020;
   padding-top: 50px;
   padding-bottom: 80px;
@@ -22,18 +21,5 @@
   color: #ffffff;
 }
 
-.more__button:hover {
-  opacity: 0.6;
-}
 
-@media screen and (max-width: 892px) {
-  .more {
-    padding-inline: 30px;
-  }
-}
 
-@media screen and (max-width: 425px) {
-    .more {
-      padding-inline: 10px;
-    }
-  }
