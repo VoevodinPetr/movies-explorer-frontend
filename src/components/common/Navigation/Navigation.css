@@ -1,0 +1,27 @@
+.navigation {
+  display: flex;
+}
+.menu__item {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.navigation__register {
+  color: #fff;
+}
+
+.navigation__enter {
+  width: 76px;
+  height: 32px;
+  border-radius: 3px;
+  margin-left: 30px;
+  background-color: #3ddc84;
+  color: #000;
+}
+
+
