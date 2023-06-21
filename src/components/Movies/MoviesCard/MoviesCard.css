@@ -40,7 +40,7 @@
   grid-area: duration;
 }
 
-.movies__button-save {
+.movies__button_save {
   background-image: url(../../../images/icon-save.svg);
   background-repeat: no-repeat;
   background-color: #222222;

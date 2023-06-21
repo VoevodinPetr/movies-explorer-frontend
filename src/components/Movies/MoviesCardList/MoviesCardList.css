@@ -11,6 +11,15 @@
   justify-content: center;
 }
 
+.movie-card-list__error {
+  position: absolute;
+  text-align: center;
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+  font-size: 32px;
+}
+
 @media screen and (max-width: 425px) {
   .movie-card-list {
     padding-bottom: 30px;
@@ -21,9 +30,9 @@
 }
 
 @media screen and (max-width: 892px) {
-    .movie-card-list {
-        grid-template-columns: repeat(auto-fit, 300px);
-        row-gap: 14px;
-        padding-top: 50px;
-    }
+  .movie-card-list {
+    grid-template-columns: repeat(auto-fit, 300px);
+    row-gap: 14px;
+    padding-top: 50px;
+  }
 }

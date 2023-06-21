@@ -1,51 +1,87 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import './Register.css';
+import "./Register.css";
 import Logo from "../../common/Logo/Logo";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 
-function Register() {
-  
+function Register({ onRegister, isRegisterMessage }) {
+  const { handleChange, values, errors, isValid } = useFormAndValidation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    onRegister(values.name, values.email, values.password);
+  };
+
   return (
     <section className="login">
       <div className="login__main">
-      <Logo />
+        <Logo />
         <h1 className="login__title">Добро пожаловать!</h1>
-        <form className="login__form">
-          <span className="login-main__title">Имя</span>
+        <form className="login__form" onSubmit={handleSubmit} noValidate>
+          <label className="login-main__title">Имя</label>
           <input
             className="login__input"
             id="name-input"
             type="text"
-            placeholder="Виталий"
+            placeholder="Имя"
             name="name"
-            required
             minLength="2"
             maxLength="30"
+            pattern="[A-Za-zА-Яа-яЁё\s-]+"
+            value={values?.name || ""}
+            onChange={handleChange}
+            required
           />
+          {errors?.name && (
+            <span className="register__input-error">{errors.name}</span>
+          )}
           <span className="login-main__title">Email</span>
           <input
             className="login__input"
             type="email"
             placeholder="Email"
             name="email"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            value={values?.email || ""}
+            onChange={handleChange}
             required
           />
-          <span className="login-main__title">Пароль</span>
+          {errors?.email && (
+            <span className="register__input-error">{errors.email}</span>
+          )}
+          <label className="login-main__title">Пароль</label>
           <input
             className="login__input"
             type="password"
             placeholder="Пароль"
             name="password"
             minLength="6"
+            value={values?.password || ""}
+            onChange={handleChange}
             required
           />
-           <span className="register__input-error">Что-то пошло не так...</span>
-          <button className="login__button register__button hover-button" type="submit">
+          {errors?.password && (
+            <span className="register__input-error">{errors.password}</span>
+          )}
+          <span className="register__input-error">{isRegisterMessage}</span>
+          <button
+            className={
+              isValid
+                ? "login__button register__button hover-button"
+                : "login__button register__button login__button_disabled"
+            }
+            disabled={!isValid}
+            type="submit"
+          >
             Зарегистрироваться
           </button>
         </form>
         <p className="login__text">
           Уже зарегистрированы?
-          <Link to="/signin" className="login__link hover-link"> Войти</Link>
+          <Link to="/signin" className="login__link hover-link">
+            Войти
+          </Link>
         </p>
       </div>
     </section>

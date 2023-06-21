@@ -1,31 +1,61 @@
 import { Link } from "react-router-dom";
-import "./Login.css";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 import Logo from "../../common/Logo/Logo";
+import "./Login.css";
 
-function Login() {
+function Login({ onLogin, isLoginMessage }) {
+  const { handleChange, values, errors, isValid } = useFormAndValidation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    onLogin(values.email, values.password);
+  };
+
   return (
     <section className="login">
       <div className="login__main">
         <Logo />
         <h1 className="login__title">Рады видеть!</h1>
-        <form className="login__form">
-          <span className="login-main__title">E-mail</span>
+        <form className="login__form" onSubmit={handleSubmit} noValidate>
+          <label className="login-main__title">E-mail</label>
           <input
             className="login__input"
-            type="E-mail"
-            placeholder="Email"
+            type="email"
+            placeholder="E-mail"
             name="email"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            value={values?.email || ""}
+            onChange={handleChange}
             required
           />
-          <span className="login-main__title">Пароль</span>
+          {errors?.email && (
+            <span className="login__input-error">{errors.email}</span>
+          )}
+          <label className="login-main__title">Пароль</label>
           <input
             className="login__input"
             type="password"
             placeholder="Пароль"
             name="password"
+            minLength="6"
+            value={values?.password || ""}
+            onChange={handleChange}
             required
           />
-          <button className="login__button hover-button" type="submit">
+          {errors?.password && (
+            <span className="login__input-error">{errors.password}</span>
+          )}
+          <span className="login__input-error">{isLoginMessage}</span>
+          <button
+            className={
+              isValid
+                ? "login__button  hover-button"
+                : "login__button  login__button_disabled"
+            }
+            disabled={!isValid}
+            type="submit"
+          >
             Войти
           </button>
         </form>
