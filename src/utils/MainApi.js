@@ -30,7 +30,7 @@ class MainApi {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
       body: JSON.stringify({
-        ountry: movie.country || 'Нет данных',
+        country: movie.country || 'Нет данных',
         director: movie.director,
         duration: movie.duration,
         year: movie.year,
@@ -65,3 +65,5 @@ const mainApi = new MainApi({
 });
 
 export default mainApi;
+
+

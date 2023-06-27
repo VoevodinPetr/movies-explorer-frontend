@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
+
 import NavigationProfile from "../../common/NavigationProfile/NavigationProfile";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
@@ -7,6 +7,7 @@ import "./Profile.css";
 
 function Profile({ onUpdateUser, onSignOut }) {
   const currentUser = useContext(CurrentUserContext);
+  const { name, email } = currentUser;
   const { handleChange, values, errors, isValid, setValues } =
     useFormAndValidation();
 
@@ -25,19 +26,18 @@ function Profile({ onUpdateUser, onSignOut }) {
     setIsSuccess(true);
   }
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    
-    onUpdateUser(values.name, values.email)
-    
-  };
+
+    onUpdateUser(name, email);
+  }
 
   return (
     <>
       <NavigationProfile />
       <section className="profile">
         <div className="profile__main">
-          <h2 className="profile__title">Привет {currentUser.name}!</h2>
+          <h2 className="profile__title">Привет, {currentUser.name}!</h2>
           <form className="profile__form" onSubmit={handleSubmit} noValidate>
             <div className="profile__field">
               <label className="profile__label">Имя</label>
@@ -83,7 +83,7 @@ function Profile({ onUpdateUser, onSignOut }) {
                 {errors?.email}
               </span>
             )}
-            
+
             {isInputDisabled ? (
               <>
                 <button
@@ -94,13 +94,13 @@ function Profile({ onUpdateUser, onSignOut }) {
                   Редактировать
                 </button>
 
-                <Link
-                  to="/signin"
+                <button
                   className="profile__link-button hover-link"
                   onClick={onSignOut}
+                  type="submit"
                 >
                   Выйти из аккаунта
-                </Link>
+                </button>
               </>
             ) : (
               <button

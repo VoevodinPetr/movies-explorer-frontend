@@ -11,14 +11,39 @@
   justify-content: center;
 }
 
-.movie-card-list__error {
+.movies-list__error {
+  display: none;
+}
+
+.movies-list__error_visible {
+  display: block;
+  margin: 0;
+  font-weight: 400;
+  font-size: 13px;
+  text-align: center;
+  color: #12ec87;
+}
+
+.movies-list__not-found {
+  display: none;
+}
+
+.movies-list__not-found_visible {
+  display: block;
+  margin: 0;
+  font-size: 20px;
+  text-align: center;
+  color: #12ec87;
+}
+
+/*.movie-card-list__error {
   position: absolute;
   text-align: center;
   width: 300px;
   left: 50%;
   margin-left: -150px;
   font-size: 32px;
-}
+}*/
 
 @media screen and (max-width: 425px) {
   .movie-card-list {

@@ -6,11 +6,11 @@ import "./Login.css";
 function Login({ onLogin, isLoginMessage }) {
   const { handleChange, values, errors, isValid } = useFormAndValidation();
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    
+
     onLogin(values.email, values.password);
-  };
+  }
 
   return (
     <section className="login">

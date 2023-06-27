@@ -86,8 +86,10 @@
 }
 
 .profile__link-button {
+  background-color: #202020;
   text-align: center;
-  text-decoration: none;
+  cursor: pointer;
+  border: none;
   color: rgba(238, 52, 101, 1);
   font-style: normal;
   font-weight: 500;

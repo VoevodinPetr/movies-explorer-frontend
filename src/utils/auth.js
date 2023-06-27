@@ -1,11 +1,10 @@
-export const BASE_URL =  'https://supermovies1.nomoredomains.monster'
+export const BASE_URL = "https://supermovies1.nomoredomains.monster";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
 
 export const register = (name, email, password) => {
- 
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
@@ -41,18 +40,16 @@ export const checkToken = (token) => {
 export const getUserInfo = () => {
   return fetch(`${BASE_URL}/users/me`, {
     headers: {
-      'Content-type': 'application/json',
-      
+      "Content-type": "application/json",
     },
   }).then(checkResponse);
 };
 
 export const updateUserInfo = (name, email) => {
   return fetch(`${BASE_URL}/users/me`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
-      
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       name: name,

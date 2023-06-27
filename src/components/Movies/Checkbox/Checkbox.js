@@ -1,4 +1,3 @@
-
 import "./Checkbox.css";
 
 function Checkbox() {

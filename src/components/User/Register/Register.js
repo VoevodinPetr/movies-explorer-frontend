@@ -7,7 +7,7 @@ import useFormAndValidation from "../../hooks/useFormAndValidation";
 function Register({ onRegister, isRegisterMessage }) {
   const { handleChange, values, errors, isValid } = useFormAndValidation();
 
-  const handleSubmit = (e) => {
+ function handleSubmit(e) {
     e.preventDefault();
     
     onRegister(values.name, values.email, values.password);

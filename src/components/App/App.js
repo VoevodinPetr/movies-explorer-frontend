@@ -32,6 +32,29 @@ function App() {
     tokenCheck();
   }, []);
 
+  /*useEffect(() => {
+    if (loggedIn) {
+      mainApi
+      .getMovies()
+        .then((savedMovies) => {
+          setSavedMovies(savedMovies);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+      auth
+        .getUserInfo()
+        .then((userData) => {
+          
+          setCurrentUser(userData);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+  
+      }
+  }, [loggedIn]);*/
+
   function getUserInfo() {
     auth
       .getUserInfo()
@@ -43,6 +66,32 @@ function App() {
         console.log(err.message);
       });
   }
+
+  function getSavedMovies() {
+    mainApi
+      .getMovies()
+      .then((savedMovies) => {
+        setSavedMovies(savedMovies);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    const path = location.pathname;
+    auth
+      .getUserInfo()
+      .then((userData) => {
+        setLoggedIn(true);
+        navigate(path);
+        setCurrentUser(userData);
+        getSavedMovies();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   function searchMovie(movieName, isShortFilms) {
     setLoading(true);
@@ -103,31 +152,6 @@ function App() {
     searchMovie(movieName, isShortFilms);
   }
 
-  function getSavedMovies() {
-    mainApi
-      .getMovies()
-      .then((savedMovies) => {
-        setSavedMovies(savedMovies);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }
-
-  useEffect(() => {
-    auth
-      .getUserInfo()
-      .then((userData) => {
-        setLoggedIn(true);
-
-        setCurrentUser(userData);
-        getSavedMovies();
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
-
   function handleCardSave(movie) {
     mainApi
       .addMovie(movie)
@@ -161,26 +185,26 @@ function App() {
     );
   }
 
-  const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
+  function tokenCheck() {
+    const token = localStorage.getItem("token");
 
-    if (jwt) {
+    if (token) {
       auth
-        .checkToken(jwt)
+        .checkToken(token)
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            navigate(location.pathname);
+            navigate("/movies");
           }
         })
         .catch((err) => {
           console.error(err);
         });
     }
-  };
+  }
 
   function onRegister(name, email, password) {
-   return auth
+    auth
       .register(name, email, password)
       .then(() => {
         onLogin(email, password);
@@ -195,7 +219,7 @@ function App() {
   }
 
   function onLogin(email, password) {
-   return auth
+    auth
       .authorize(email, password)
       .then((res) => {
         if (res.token) {
@@ -214,27 +238,27 @@ function App() {
           setLoginMessage("Вы ввели неправильный логин или пароль.");
         }
       });
-  };
+  }
 
-  const onUpdateUser = (name, email) => {
+  function onUpdateUser(name, email) {
     auth
-      .updateUserInfo({ name, email })
+      .updateUserInfo(name, email)
       .then(() => {
         setCurrentUser({ name, email });
       })
       .catch((err) => {
         console.error(err.message);
       });
-  };
+  }
 
-  const onSignOut = () => {
+  function onSignOut() {
     localStorage.clear();
     navigate("/");
     setLoggedIn(false);
     setCurrentUser({});
     setRegisterMessage(false);
     setLoginMessage(false);
-  };
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -278,10 +302,7 @@ function App() {
           path="/profile"
           element={
             <ProtectedRoute loggedIn={loggedIn}>
-              <Profile
-                onUpdateUser={onUpdateUser}
-                onSignOut={onSignOut}
-              />
+              <Profile onUpdateUser={onUpdateUser} onSignOut={onSignOut} />
             </ProtectedRoute>
           }
         />

@@ -5,8 +5,8 @@ import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../common/Footer/Footer";
 
 function SavedMovies(props) {
-  const [filteredMovies, setFilteredMovies] = useState([]);
 
+  const [filteredMovies, setFilteredMovies] = useState([])
   function handleSearch(movieName, isShortFilms) {
     const filteredMovies = props.cards.filter((item) =>
       item.nameRU.toLowerCase().includes(movieName.toLowerCase())
@@ -39,6 +39,7 @@ function SavedMovies(props) {
       <NavigationProfile />
       <main>
         <SearchForm handleSearch={handleSearch} defaultValue="" />
+
         <MoviesCardList
           cards={filteredMovies}
           isSaved={props.isSaved}

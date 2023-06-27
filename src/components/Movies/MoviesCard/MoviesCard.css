@@ -10,12 +10,15 @@
     "duration duration";
 }
 
+.movie__trailer {
+  grid-area: image;
+}
+
 .movies__img {
   width: 100%;
   object-position: center;
   object-fit: cover;
   height: 203px;
-  grid-area: image;
 }
 
 .movies__title {
@@ -33,23 +36,39 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
-  display: flex;
+
   align-items: center;
   margin: 0 0 16px 16px;
   color: #8b8b8b;
   grid-area: duration;
 }
 
-.movies__button_save {
-  background-image: url(../../../images/icon-save.svg);
+.movies__button-save {
+  background-image: url(../../../images/iconizer-icon-save.svg);
   background-repeat: no-repeat;
-  background-color: #222222;
-  width: 30px;
-  height: 30px;
+  width: 14px;
+  height: 12px;
   border: none;
   cursor: pointer;
   padding: 0;
   grid-area: button;
   background-position: center;
-  margin: 9px 16px 0 0;
+  margin: 18px 9px 0 0;
+}
+
+.movie__button-delete {
+  background-image: url(../../../images/remove_saved_film.svg);
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 12px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  grid-area: button;
+  background-position: center;
+  margin: 18px 9px 0 0;
+}
+
+.movie__button-saved {
+  background-image: url(../../../images/icon-save2.svg);
 }
