@@ -4,11 +4,10 @@ import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../common/Footer/Footer";
 
-function SavedMovies(props) {
-
-  const [filteredMovies, setFilteredMovies] = useState([])
+function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
+  const [filteredMovies, setFilteredMovies] = useState([]);
   function handleSearch(movieName, isShortFilms) {
-    const filteredMovies = props.cards.filter((item) =>
+    const filteredMovies = cards.filter((item) =>
       item.nameRU.toLowerCase().includes(movieName.toLowerCase())
     );
     if (isShortFilms) {
@@ -19,16 +18,16 @@ function SavedMovies(props) {
   }
 
   function initFilteredMovies() {
-    setFilteredMovies(props.cards);
+    setFilteredMovies(cards);
   }
 
   useEffect(() => {
     setFilteredMovies(
       filteredMovies.filter((movie) =>
-        props.cards.some((card) => movie.movieId === card.movieId)
+        cards.some((card) => movie.movieId === card.movieId)
       )
     );
-  }, [props.cards]);
+  }, [cards]);
 
   useEffect(() => {
     initFilteredMovies();
@@ -42,11 +41,11 @@ function SavedMovies(props) {
 
         <MoviesCardList
           cards={filteredMovies}
-          isSaved={props.isSaved}
+          isSaved={isSaved}
           isOnlySaved={true}
-          onCardDelete={props.onCardDelete}
-          serverError={props.serverError}
-          loading={props.loading}
+          onMovieDelete={onMovieDelete}
+          serverError={serverError}
+          loading={loading}
         />
       </main>
       <Footer />

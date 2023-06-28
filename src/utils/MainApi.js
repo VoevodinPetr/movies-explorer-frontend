@@ -1,69 +1,60 @@
 class MainApi {
-  constructor({ url }) {
-    this._url = url;
+  constructor({ address, headers }) {
+    this._address = address;
+    this._headers = headers;
   }
 
-  checkError(res) {
+  _checkResponse(res) {
     if (res.ok) {
       return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
 
   getMovies() {
-    return fetch(`${this._url}/movies`, {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-    }).then((res) => {
-      return this.checkError(res);
-    });
+    return fetch(`${this._address}/movies`, {
+      headers: this._headers,
+      credentials: "include",
+    }).then(this._checkResponse);
   }
 
   addMovie(movie) {
-    return fetch(`${this._url}/movies`, {
+    return fetch(`${this._address}/movies`, {
       method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
+      credentials: "include",
+      headers: this._headers,
       body: JSON.stringify({
-        country: movie.country || 'Нет данных',
+        country: movie.country || "Нет данных",
         director: movie.director,
         duration: movie.duration,
         year: movie.year,
         description: movie.description,
-        image: `https://api.nomoreparties.co${movie.image.url}`,
-        trailerLink: movie.trailerLink || 'https://www.youtube.com',
-        thumbnail: (`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`),
+        image: `https://api.nomoreparties.co/${movie.image.url}`,
+        trailerLink: movie.trailerLink || "https://www.youtube.com",
+        thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
         movieId: movie.id,
-        nameRU: movie.nameRU || 'Нет данных',
-        nameEN: movie.nameEN || 'Нет данных',
+        nameRU: movie.nameRU || "Нет данных",
+        nameEN: movie.nameEN || "Нет данных",
       }),
-    }).then((res) => {
-      return this.checkError(res);
-    });
+    }).then(this._checkResponse);
   }
 
   deleteMovie(movieId) {
-    return fetch(`${this._url}/movies/${movieId}`, {
+    return fetch(`${this._address}/movies/${movieId}`, {
       method: "DELETE",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      },
-    }).then((res) => {
-      return this.checkError(res);
-    });
+      credentials: "include",
+      headers: this._headers,
+    }).then(this._checkResponse);
   }
 }
 
 const mainApi = new MainApi({
-  url: "https://supermovies1.nomoredomains.monster",
+  address: "https://supermovies1.nomoredomains.monster",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+  },
 });
 
 export default mainApi;
-
-

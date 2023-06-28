@@ -1,5 +1,7 @@
 import "./App.css";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import Profile from "../User/Profile/Profile";
@@ -10,7 +12,7 @@ import Page404 from "../Page404/Page404";
 import mainApi from "../../utils/MainApi";
 import * as auth from "../../utils/auth";
 import * as moviesApi from "../../utils/MoviesApi";
-import { useState, useEffect } from "react";
+
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
@@ -19,8 +21,8 @@ function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [isRegisterMessage, setRegisterMessage] = useState(false);
-  const [isLoginMessage, setLoginMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isMessageProfile, setIsMessageProfile] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
@@ -32,66 +34,45 @@ function App() {
     tokenCheck();
   }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       mainApi
-      .getMovies()
+        .getMovies()
         .then((savedMovies) => {
           setSavedMovies(savedMovies);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log(err);
         });
       auth
         .getUserInfo()
-        .then((userData) => {
-          
-          setCurrentUser(userData);
+        .then((data) => {
+          setCurrentUser(data);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.error(`Данные пользователя не получены: ${err}`);
         });
-  
-      }
-  }, [loggedIn]);*/
+    }
+  }, [loggedIn]);
 
-  function getUserInfo() {
-    auth
-      .getUserInfo()
-      .then((userData) => {
-        setLoggedIn(true);
-        setCurrentUser(userData);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
 
-  function getSavedMovies() {
-    mainApi
-      .getMovies()
-      .then((savedMovies) => {
-        setSavedMovies(savedMovies);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }
-
-  useEffect(() => {
-    const path = location.pathname;
-    auth
-      .getUserInfo()
-      .then((userData) => {
-        setLoggedIn(true);
-        navigate(path);
-        setCurrentUser(userData);
-        getSavedMovies();
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate(location.pathname);
+          }
+        })
+        .catch((err) => {
+          handleLogout();
+          console.error(err);
+        });
+    }
+  };
 
   function searchMovie(movieName, isShortFilms) {
     setLoading(true);
@@ -152,7 +133,7 @@ function App() {
     searchMovie(movieName, isShortFilms);
   }
 
-  function handleCardSave(movie) {
+  function handleMovieSave(movie) {
     mainApi
       .addMovie(movie)
       .then((movieData) => {
@@ -163,7 +144,7 @@ function App() {
       });
   }
 
-  function handleCardDelete(card) {
+  function handleMovieDelete(card) {
     const deleteCard = savedMovies.find(
       (c) =>
         c.movieId === (card.id || card.movieId) && c.owner === currentUser._id
@@ -185,85 +166,65 @@ function App() {
     );
   }
 
-  function tokenCheck() {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      auth
-        .checkToken(token)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            navigate("/movies");
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }
-
   function onRegister(name, email, password) {
     auth
       .register(name, email, password)
-      .then(() => {
-        onLogin(email, password);
+      .then((data) => {
+        if (data) {
+          handleLogin(email, password);
+        }
       })
       .catch((err) => {
         err.status !== 400
-          ? setRegisterMessage("Пользователь с таким email уже зарегистрирован")
-          : setRegisterMessage(
-              "При регистрации пользователя произошла ошибка."
-            );
+          ? setErrorMessage("Пользователь с таким email уже зарегистрирован")
+          : setErrorMessage("При регистрации пользователя произошла ошибка.");
       });
   }
 
-  function onLogin(email, password) {
+  function handleLogin(email, password) {
     auth
       .authorize(email, password)
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          auth.checkToken(res.token).then((res) => {
-            if (res) {
-              navigate("/movies");
-              setLoggedIn(true);
-              getUserInfo();
-            }
-          });
-        }
+        localStorage.setItem("jwt", res.token);
+        auth.checkToken(res.token).then((res) => {
+          if (res) {
+            navigate("/movies");
+            setLoggedIn(true);
+          }
+        });
       })
       .catch((err) => {
-        if (err.includes(401)) {
-          setLoginMessage("Вы ввели неправильный логин или пароль.");
-        }
+        setErrorMessage("Что-то пошло не так...");
+        console.log(err.message);
       });
   }
 
   function onUpdateUser(name, email) {
     auth
       .updateUserInfo(name, email)
-      .then(() => {
-        setCurrentUser({ name, email });
+      .then((data) => {
+        setIsMessageProfile(true);
+        setCurrentUser(data);
       })
       .catch((err) => {
-        console.error(err.message);
+        console.log(err.message);
+      })
+      .finally(() => {
+        setTimeout(() => setIsMessageProfile(false), 1000);
       });
   }
 
-  function onSignOut() {
-    localStorage.clear();
+  function handleLogout() {
+    localStorage.removeItem("token");
     navigate("/");
     setLoggedIn(false);
     setCurrentUser({});
-    setRegisterMessage(false);
-    setLoginMessage(false);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main loggedIn={loggedIn}/>} />
         <Route
           path="/movies"
           element={
@@ -276,8 +237,8 @@ function App() {
                 cards={movies}
                 handleShowMore={handleShowMore}
                 isSaved={isSaved}
-                onCardSave={handleCardSave}
-                onCardDelete={handleCardDelete}
+                onMovieSave={handleMovieSave}
+                onMovieDelete={handleMovieDelete}
                 serverError={serverError}
                 loading={loading}
               ></Movies>
@@ -292,7 +253,7 @@ function App() {
                 loading={loading}
                 cards={savedMovies}
                 isSaved={isSaved}
-                onCardDelete={handleCardDelete}
+                onMovieDelete={handleMovieDelete}
                 serverError={serverError}
               ></SavedMovies>
             </ProtectedRoute>
@@ -302,22 +263,25 @@ function App() {
           path="/profile"
           element={
             <ProtectedRoute loggedIn={loggedIn}>
-              <Profile onUpdateUser={onUpdateUser} onSignOut={onSignOut} />
+              <Profile
+                onUpdateUser={onUpdateUser}
+                handleLogout={handleLogout}
+                isMessageProfile={isMessageProfile}
+              />
             </ProtectedRoute>
           }
         />
         <Route
           path="/signup"
           element={
-            <Register
-              onRegister={onRegister}
-              isRegisterMessage={isRegisterMessage}
-            />
+            <Register onRegister={onRegister} errorMessage={errorMessage} />
           }
         />
         <Route
           path="/signin"
-          element={<Login onLogin={onLogin} isLoginMessage={isLoginMessage} />}
+          element={
+            <Login handleLogin={handleLogin} errorMessage={errorMessage} />
+          }
         />
         <Route path="*" element={<Page404 />} />
       </Routes>

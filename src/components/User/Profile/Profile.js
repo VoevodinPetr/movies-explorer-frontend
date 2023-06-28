@@ -1,36 +1,47 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 
 import NavigationProfile from "../../common/NavigationProfile/NavigationProfile";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "./Profile.css";
 
-function Profile({ onUpdateUser, onSignOut }) {
+function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
   const currentUser = useContext(CurrentUserContext);
-  const { name, email } = currentUser;
-  const { handleChange, values, errors, isValid, setValues } =
-    useFormAndValidation();
+  const [isEditInput, setIsEditInput] = useState(true);
+  const controlInput = useFormAndValidation();
+  const { nameErr, emailErr } = controlInput.errors;
+  const errorClassName = !controlInput.isValid
+    ? "profile__input-error profile__input-error_visible"
+    : "profile__input-error";
 
-  const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const saveInput = (e) => {
+    e.preventDefault();
+    setIsEditInput((state) => !state);
+  };
 
-  useEffect(() => {
-    setValues(currentUser);
-  }, [currentUser]);
-
-  function onUpdateUser() {
-    setIsInputDisabled(false);
-  }
-
-  function handleSave() {
-    setIsSuccess(true);
-  }
+  let disableUserCurrentCheck =
+    (currentUser.name === controlInput?.values?.name &&
+      typeof controlInput?.values?.email === "undefined") ||
+    (currentUser.email === controlInput?.values?.email &&
+      typeof controlInput?.values?.email === "undefined");
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    onUpdateUser(name, email);
+    const { name, email } = controlInput.values;
+    if (!name) {
+      onUpdateUser(currentUser.name, email);
+    } else if (!email) {
+      onUpdateUser(name, currentUser.email);
+    } else {
+      onUpdateUser(name, email);
+    }
+    setTimeout(() => setIsEditInput((state) => !state), 1000);
+    controlInput.resetForm();
   }
+
+  let classNameMessageBtn = isMessageProfile
+    ? "profile__message"
+    : "profile__message profile__message_hidden";
 
   return (
     <>
@@ -44,77 +55,64 @@ function Profile({ onUpdateUser, onSignOut }) {
               <input
                 className="profile__input"
                 type="text"
-                placeholder="Имя"
                 name="name"
                 minLength="2"
                 maxLength="30"
-                value={values?.name || ""}
-                onChange={handleChange}
-                disabled={isInputDisabled}
-                required
+                required="{true}"
+                placeholder={currentUser.name}
+                pattern="[A-Za-zА-Яа-яЁё\s-]+"
+                onChange={controlInput.handleChange}
+                value={controlInput?.values?.name ?? currentUser.name}
+                {...(!isEditInput ? {} : { disabled: true })}
               />
             </div>
-            {errors?.name && (
-              <span className="profile__input-error">{errors.name}</span>
-            )}
+            <span className={errorClassName}>{nameErr}</span>
             <div className="profile__field">
               <label className="profile__label">E-mail</label>
               <input
                 className="profile__input"
                 type="email"
-                placeholder="E-mail"
                 name="email"
-                value={values?.email || ""}
-                onChange={handleChange}
-                disabled={isInputDisabled}
-                required
+                placeholder={currentUser.email}
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                onChange={controlInput.handleChange}
+                value={controlInput?.values?.email ?? currentUser.email}
+                {...(!isEditInput ? {} : { disabled: true })}
               />
             </div>
-            {errors?.email && (
-              <span className="profile__input-error">{errors.email}</span>
+            <span className={errorClassName}>{emailErr}</span>
+
+            {!isEditInput && (
+              <>
+                <span className={classNameMessageBtn}>
+                  Изменения сохранены!
+                </span>
+                <button
+                  className="profile__save-button hover-button"
+                  disabled={disableUserCurrentCheck || !controlInput.isValid}
+                >
+                  Сохранить
+                </button>
+              </>
             )}
 
-            {isSuccess ? (
-              <p className="profile__edit-status profile__edit-status_ok">
-                Изменения сохранены
-              </p>
-            ) : (
-              <span className="profile__edit-status profile__edit-status_error">
-                {errors?.email}
-              </span>
-            )}
-
-            {isInputDisabled ? (
+            {isEditInput && (
               <>
                 <button
                   className="profile__button hover-link"
-                  onClick={onUpdateUser}
-                  type="submit"
+                  onClick={saveInput}
                 >
                   Редактировать
                 </button>
 
                 <button
                   className="profile__link-button hover-link"
-                  onClick={onSignOut}
+                  onClick={handleLogout}
                   type="submit"
                 >
                   Выйти из аккаунта
                 </button>
               </>
-            ) : (
-              <button
-                className={
-                  isValid
-                    ? "profile__save-button hover-button"
-                    : "profile__save-button profile__save-button_disabled"
-                }
-                onClick={handleSave}
-                type="submit"
-                disabled={!isValid}
-              >
-                Сохранить
-              </button>
             )}
           </form>
         </div>

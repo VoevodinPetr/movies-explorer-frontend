@@ -37,7 +37,6 @@ function NavigationProfile() {
           <NavLink
             to="/movies"
             className="navigation__link navigation__link_loggedin hover-link"
-            //activeClassName="navigation__link_active"
             onClick={handlePopupClose}
           >
             Фильмы
@@ -45,7 +44,6 @@ function NavigationProfile() {
           <NavLink
             to="/saved-movies"
             className="navigation__link navigation__link_loggedin hover-link"
-           //activeClassName="navigation__link_active"
             onClick={handlePopupClose}
           >
             Сохранённые фильмы

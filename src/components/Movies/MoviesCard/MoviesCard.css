@@ -43,8 +43,7 @@
   grid-area: duration;
 }
 
-.movies__button-save {
-  background-image: url(../../../images/iconizer-icon-save.svg);
+.movies__button {
   background-repeat: no-repeat;
   width: 14px;
   height: 12px;
@@ -56,17 +55,13 @@
   margin: 18px 9px 0 0;
 }
 
+.movies__button-save {
+  background-image: url(../../../images/iconizer-icon-save.svg);
+}
+
 .movie__button-delete {
-  background-image: url(../../../images/remove_saved_film.svg);
-  background-repeat: no-repeat;
-  width: 14px;
-  height: 12px;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  grid-area: button;
-  background-position: center;
-  margin: 18px 9px 0 0;
+  background-image: url(../../../images/btn-delete-icon.svg);
+  background-color: #202020;
 }
 
 .movie__button-saved {

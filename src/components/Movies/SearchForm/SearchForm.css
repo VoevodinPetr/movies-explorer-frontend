@@ -4,7 +4,7 @@
 }
 
 .search-form__container {
-  max-width: 1140px;
+  max-width: 1400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,6 +54,16 @@
 .search-form__border {
   margin-right: 29px;
   background: #424242;
+}
+
+.search__error {
+  
+  left: 50%;
+  
+  font-weight: 400;
+  font-size: 13px;
+  color: red;
+  
 }
 
 @media screen and (max-width: 768px) {

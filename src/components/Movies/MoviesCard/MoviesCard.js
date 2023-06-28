@@ -1,36 +1,37 @@
 import React from "react";
 import "./MoviesCard.css";
 
-function MoviesCard(props) {
-  const nameRu = props.card.nameRU;
-  const poster = props.isOnlySaved
-    ? props.card.image
-    : `https://api.nomoreparties.co/${props.card.image.url}`;
-  const trailerLink = props.card.trailerLink;
+function MoviesCard({
+  card,
+  isOnlySaved,
+  onMovieSave,
+  onMovieDelete,
+  isSaved,
+}) {
+  const nameRu = card.nameRU;
+  const poster = isOnlySaved
+    ? card.image
+    : `https://api.nomoreparties.co/${card.image.url}`;
+  const trailerLink = card.trailerLink;
 
   const duration = () => {
-    if (props.card.duration > 60) {
-      return (
-        ((props.card.duration / 60) | 0) +
-        "ч " +
-        (props.card.duration % 60) +
-        "м"
-      );
+    if (card.duration > 60) {
+      return ((card.duration / 60) | 0) + "ч " + (card.duration % 60) + "м";
     }
-    if (props.card.duration === 60) {
-      return props.card.duration / 60 + "ч";
+    if (card.duration === 60) {
+      return card.duration / 60 + "ч";
     } else {
-      return props.card.duration + "м";
+      return card.duration + "м";
     }
   };
 
-  function handleCardSave() {
-    props.onCardSave(props.card);
+  function handleMovieSave() {
+    onMovieSave(card);
   }
 
-  // function handleCardDelete() {
-  //   props.onCardDelete(props.card);
-  // }
+  function handleMovieDelete() {
+    onMovieDelete(card);
+  }
 
   return (
     <>
@@ -45,11 +46,25 @@ function MoviesCard(props) {
         </a>
         <h4 className="movies__title">{nameRu}</h4>
 
-        <button
-          className="movies__button-save hover-button"
-          onClick={handleCardSave}
-          type="button"
-        ></button>
+        {isOnlySaved ? (
+          <button
+            className="movies__button movie__button-delete  hover-button"
+            onClick={handleMovieDelete}
+            type="button"
+          ></button>
+        ) : isSaved(card) ? (
+          <button
+            className="movies__button movie__button-saved hover-button"
+            onClick={handleMovieDelete}
+            type="button"
+          ></button>
+        ) : (
+          <button
+            className="movies__button movies__button-save hover-button"
+            onClick={handleMovieSave}
+            type="button"
+          ></button>
+        )}
         <p className="movies__duration">{duration()}</p>
       </li>
     </>

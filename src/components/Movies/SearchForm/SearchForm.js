@@ -4,27 +4,35 @@ import Checkbox from "../Checkbox/Checkbox";
 import lupa from "../../../images/lupa.svg";
 import border from "../../../images/icon-border.svg";
 
-function SearchForm(props) {
+function SearchForm({handleSearch, defaultValue}) {
+  const [errorText, setErrorText] = useState('');
   const [movieName, setMovieName] = useState("");
   const [checkbox, setCheckbox] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   function handleChangeMovieName(e) {
     setMovieName(e.target.value);
+    setIsFormValid(e.target.closest('form').checkValidity());
   }
 
   function handleChangeCheckbox(e) {
     const isShortFilms = e.target.checked;
     setCheckbox(isShortFilms);
-    props.handleSearch(movieName, isShortFilms);
+    handleSearch(movieName, isShortFilms);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.handleSearch(movieName, checkbox);
+
+    setIsFormValid(e.target.closest('form').checkValidity());
+    if (!isFormValid) {
+      return setErrorText('Нужно ввести ключевое слово');
+    }
+    handleSearch(movieName, checkbox);
   }
 
   useEffect(() => {
-    setMovieName(props.defaultValue);
+    setMovieName(defaultValue);
     setCheckbox(JSON.parse(localStorage.getItem("shortFilms")) || false);
   }, []);
 
@@ -47,6 +55,7 @@ function SearchForm(props) {
             onSubmit={handleSubmit}
             type="submit"
           ></button>
+          <span className='search__error'>{!isFormValid && errorText}</span>
           <img className="search-form__border" src={border} alt="разделитель" />
           <div className="search-form__checkbox">
             <div className="checkbox__container">

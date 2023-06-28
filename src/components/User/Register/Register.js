@@ -7,11 +7,11 @@ import useFormAndValidation from "../../hooks/useFormAndValidation";
 function Register({ onRegister, isRegisterMessage }) {
   const { handleChange, values, errors, isValid } = useFormAndValidation();
 
- function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    
+
     onRegister(values.name, values.email, values.password);
-  };
+  }
 
   return (
     <section className="login">
@@ -28,7 +28,6 @@ function Register({ onRegister, isRegisterMessage }) {
             name="name"
             minLength="2"
             maxLength="30"
-            pattern="[A-Za-zА-Яа-яЁё\s-]+"
             value={values?.name || ""}
             onChange={handleChange}
             required
@@ -42,7 +41,6 @@ function Register({ onRegister, isRegisterMessage }) {
             type="email"
             placeholder="Email"
             name="email"
-            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
             value={values?.email || ""}
             onChange={handleChange}
             required

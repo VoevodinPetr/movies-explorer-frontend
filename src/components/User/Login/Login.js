@@ -3,13 +3,13 @@ import useFormAndValidation from "../../hooks/useFormAndValidation";
 import Logo from "../../common/Logo/Logo";
 import "./Login.css";
 
-function Login({ onLogin, isLoginMessage }) {
+function Login({ handleLogin, errorMessage }) {
   const { handleChange, values, errors, isValid } = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    onLogin(values.email, values.password);
+    handleLogin(values.email, values.password);
   }
 
   return (
@@ -46,7 +46,7 @@ function Login({ onLogin, isLoginMessage }) {
           {errors?.password && (
             <span className="login__input-error">{errors.password}</span>
           )}
-          <span className="login__input-error">{isLoginMessage}</span>
+          <span className="login__input-error">{errorMessage}</span>
           <button
             className={
               isValid

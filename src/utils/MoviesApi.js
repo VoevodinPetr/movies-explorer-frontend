@@ -1,4 +1,4 @@
-export const MOVIES_API = `https://api.nomoreparties.co/beatfilm-movies`;
+import { MOVIES_API } from "./constants";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);

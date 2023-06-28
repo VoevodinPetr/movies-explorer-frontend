@@ -4,25 +4,35 @@ import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../common/Footer/Footer";
 
-function Movies(props) {
+function Movies({
+  handleSearch,
+  handleShowMore,
+  defaultSearchValue,
+  cards,
+  isSaved,
+  onMovieSave,
+  onMovieDelete,
+  serverError,
+  loading,
+}) {
   return (
     <>
       <NavigationProfile />
       <main>
         <SearchForm
-          handleSearch={props.handleSearch}
-          defaultValue={props.defaultSearchValue}
+          handleSearch={handleSearch}
+          defaultValue={defaultSearchValue}
         />
 
         <MoviesCardList
-          cards={props.cards}
-          handleShowMore={props.handleShowMore}
-          isSaved={props.isSaved}
+          cards={cards}
+          handleShowMore={handleShowMore}
+          isSaved={isSaved}
           isOnlySaved={false}
-          onCardSave={props.onCardSave}
-          onCardDelete={props.onCardDelete}
-          serverError={props.serverError}
-          loading={props.loading}
+          onMovieSave={onMovieSave}
+          onMovieDelete={onMovieDelete}
+          serverError={serverError}
+          loading={loading}
         />
       </main>
       <Footer />
