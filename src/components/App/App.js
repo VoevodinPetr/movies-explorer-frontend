@@ -21,7 +21,7 @@ function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
   const [isMessageProfile, setIsMessageProfile] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -177,7 +177,7 @@ function App() {
       .catch((err) => {
         err.status !== 400
           ? setErrorMessage("Пользователь с таким email уже зарегистрирован")
-          : setErrorMessage("При регистрации пользователя произошла ошибка.");
+          : setErrorMessage("Что-то пошло не так...");
       });
   }
 
@@ -185,7 +185,7 @@ function App() {
     auth
       .authorize(email, password)
       .then((res) => {
-        localStorage.setItem("jwt", res.token);
+        localStorage.setItem("token", res.token);
         auth.checkToken(res.token).then((res) => {
           if (res) {
             navigate("/movies");
@@ -219,6 +219,7 @@ function App() {
     navigate("/");
     setLoggedIn(false);
     setCurrentUser({});
+    setErrorMessage(false)
   }
 
   return (

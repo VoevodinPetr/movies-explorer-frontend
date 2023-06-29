@@ -53,6 +53,7 @@
   grid-area: button;
   background-position: center;
   margin: 18px 9px 0 0;
+  background-color: #222222;
 }
 
 .movies__button-save {
@@ -61,7 +62,6 @@
 
 .movie__button-delete {
   background-image: url(../../../images/btn-delete-icon.svg);
-  background-color: #202020;
 }
 
 .movie__button-saved {
