@@ -44,7 +44,7 @@ export const updateUserInfo = (name, email) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify({
       name: name,
@@ -57,7 +57,7 @@ export const getUserInfo = () => {
   return fetch(`${BASE_URL}/users/me`, {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   }).then(checkResponse);
 };
