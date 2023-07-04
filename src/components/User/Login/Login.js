@@ -64,7 +64,7 @@ function Login({ handleLogin, errorMessage }) {
           </button>
         </form>
         <p className="login__text">
-          Ещё не зарегистрированы?&nbsp;
+          Ещё не зарегистрированы?{' '}
           <Link to="/signup" className="login__link hover-link">
             Регистрация
           </Link>

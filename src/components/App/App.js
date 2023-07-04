@@ -13,6 +13,18 @@ import mainApi from "../../utils/MainApi";
 import * as auth from "../../utils/auth";
 import * as moviesApi from "../../utils/MoviesApi";
 
+import {
+  SCREEN_ZIZE_1280,
+  SCREEN_ZIZE_480,
+  VISIBLE_MOVIES_5,
+  VISIBLE_MOVIES_8,
+  VISIBLE_MOVIES_12,
+  MOVIES_LOAD_0,
+  MOVIES_LOAD_2,
+  MOVIES_LOAD_3,
+} from "../../utils/constants";
+import { REQUEST_ERRORS } from "../../utils/constants";
+
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
@@ -74,19 +86,19 @@ function App() {
     }
   };
 
-  function searchMovie(movieName, isShortFilms) {
+  function searchMovie(keyword, isShortFilms) {
     setLoading(true);
     moviesApi
       .getApiMovies()
       .then((movies) => {
         const searchedMovies = movies.filter((item) =>
-          item.nameRU.toLowerCase().includes(movieName.toLowerCase())
+          item.nameRU.toLowerCase().includes(keyword.toLowerCase())
         );
         const foundMovies = isShortFilms
           ? searchedMovies.filter((item) => item.duration <= 40)
           : searchedMovies;
         localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
-        localStorage.setItem("searchMovieName", movieName);
+        localStorage.setItem("searchMovieName", keyword);
         localStorage.setItem("shortFilms", isShortFilms);
         setLoading(false);
         handleResize();
@@ -107,15 +119,18 @@ function App() {
     if (foundMovies === null) {
       return;
     }
-    if (windowWidth >= 1280) {
-      setMovies(foundMovies.slice(0, 12));
-      setMoreCards(3);
-    } else if (windowWidth > 480 && windowWidth < 1280) {
-      setMovies(foundMovies.slice(0, 8));
-      setMoreCards(2);
-    } else if (windowWidth <= 480) {
-      setMovies(foundMovies.slice(0, 5));
-      setMoreCards(2);
+    if (windowWidth >= SCREEN_ZIZE_1280) {
+      setMovies(foundMovies.slice(MOVIES_LOAD_0, VISIBLE_MOVIES_12));
+      setMoreCards(MOVIES_LOAD_3);
+    } else if (
+      windowWidth > SCREEN_ZIZE_480 &&
+      windowWidth < SCREEN_ZIZE_1280
+    ) {
+      setMovies(foundMovies.slice(MOVIES_LOAD_0, VISIBLE_MOVIES_8));
+      setMoreCards(MOVIES_LOAD_2);
+    } else if (windowWidth <= SCREEN_ZIZE_480) {
+      setMovies(foundMovies.slice(MOVIES_LOAD_0, VISIBLE_MOVIES_5));
+      setMoreCards(MOVIES_LOAD_2);
     }
   }
 
@@ -129,8 +144,8 @@ function App() {
     setMovies(foundMovies.slice(0, movies.length + moreCards));
   }
 
-  function handleSearch(movieName, isShortFilms) {
-    searchMovie(movieName, isShortFilms);
+  function handleSearch(keyword, isShortFilms) {
+    searchMovie(keyword, isShortFilms);
   }
 
   function handleMovieSave(movie) {
@@ -176,8 +191,8 @@ function App() {
       })
       .catch((err) => {
         err.status !== 400
-          ? setErrorMessage("Пользователь с таким email уже зарегистрирован")
-          : setErrorMessage("Что-то пошло не так...");
+          ? setErrorMessage(REQUEST_ERRORS.ERROR_409)
+          : setErrorMessage(REQUEST_ERRORS.ERROR_DEFAULT);
       });
   }
 
@@ -194,7 +209,7 @@ function App() {
         });
       })
       .catch((err) => {
-        setErrorMessage("Вы ввели неправильный логин или пароль.");
+        setErrorMessage(REQUEST_ERRORS.ERROR_401);
         console.log(err.message);
       });
   }
@@ -216,6 +231,7 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("token");
+   
     navigate("/");
     setLoggedIn(false);
     setCurrentUser({});

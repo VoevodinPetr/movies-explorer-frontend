@@ -83,7 +83,7 @@ function Register({ onRegister, isRegisterMessage }) {
           </button>
         </form>
         <p className="login__text">
-          Уже зарегистрированы?&nbsp;
+          Уже зарегистрированы?{' '}
           <Link to="/signin" className="login__link hover-link">
             Войти
           </Link>

@@ -6,9 +6,9 @@ import Footer from "../common/Footer/Footer";
 
 function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
   const [filteredMovies, setFilteredMovies] = useState([]);
-  function handleSearch(movieName, isShortFilms) {
+  function handleSearch(keyword, isShortFilms) {
     const filteredMovies = cards.filter((item) =>
-      item.nameRU.toLowerCase().includes(movieName.toLowerCase())
+      item.nameRU.toLowerCase().includes(keyword.toLowerCase())
     );
     if (isShortFilms) {
       setFilteredMovies(filteredMovies.filter((item) => item.duration <= 40));
