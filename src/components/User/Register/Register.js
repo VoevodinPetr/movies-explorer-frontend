@@ -19,50 +19,57 @@ function Register({ onRegister, isRegisterMessage }) {
         <Logo />
         <h1 className="login__title">Добро пожаловать!</h1>
         <form className="login__form" onSubmit={handleSubmit} noValidate>
-          <label className="login-main__title">Имя</label>
-          <input
-            className="login__input"
-            id="name-input"
-            type="text"
-            placeholder="Имя"
-            name="name"
-            minLength="2"
-            maxLength="30"
-            value={values?.name || ""}
-            onChange={handleChange}
-            required
-          />
-          {errors?.name && (
-            <span className="register__input-error">{errors.name}</span>
-          )}
-          <span className="login-main__title">Email</span>
-          <input
-            className="login__input"
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={values?.email || ""}
-            onChange={handleChange}
-            required
-          />
-          {errors?.email && (
-            <span className="register__input-error">{errors.email}</span>
-          )}
-          <label className="login-main__title">Пароль</label>
-          <input
-            className="login__input"
-            type="password"
-            placeholder="Пароль"
-            name="password"
-            minLength="6"
-            value={values?.password || ""}
-            onChange={handleChange}
-            required
-          />
-          {errors?.password && (
-            <span className="register__input-error">{errors.password}</span>
-          )}
-          <span className="register__input-error">{isRegisterMessage}</span>
+          <div className="login__form-field">
+            <label className="login-main__title">Имя</label>
+            <input
+              className="login__input"
+              id="name-input"
+              type="text"
+              placeholder="Имя"
+              name="name"
+              minLength="2"
+              maxLength="30"
+              value={values?.name || ""}
+              onChange={handleChange}
+              required
+            />
+            {errors?.name && (
+              <span className="register__input-error">{errors.name}</span>
+            )}
+          </div>
+          <div className="login__form-field">
+            <label className="login-main__title">Email</label>
+
+            <input
+              className="login__input"
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={values?.email || ""}
+              onChange={handleChange}
+              required
+            />
+            {errors?.email && (
+              <span className="register__input-error">{errors.email}</span>
+            )}
+          </div>
+          <div className="login__form-field">
+            <label className="login-main__title">Пароль</label>
+            <input
+              className="login__input"
+              type="password"
+              placeholder="Пароль"
+              name="password"
+              minLength="6"
+              value={values?.password || ""}
+              onChange={handleChange}
+              required
+            />
+            {errors?.password && (
+              <span className="register__input-error">{errors.password}</span>
+            )}
+            <span className="register__input-error">{isRegisterMessage}</span>
+          </div>
           <button
             className={
               isValid
@@ -76,7 +83,7 @@ function Register({ onRegister, isRegisterMessage }) {
           </button>
         </form>
         <p className="login__text">
-          Уже зарегистрированы?
+          Уже зарегистрированы?&nbsp;
           <Link to="/signin" className="login__link hover-link">
             Войти
           </Link>

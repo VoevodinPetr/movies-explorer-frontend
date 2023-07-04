@@ -194,7 +194,7 @@ function App() {
         });
       })
       .catch((err) => {
-        setErrorMessage("Что-то пошло не так...");
+        setErrorMessage("Вы ввели неправильный логин или пароль.");
         console.log(err.message);
       });
   }
@@ -219,13 +219,13 @@ function App() {
     navigate("/");
     setLoggedIn(false);
     setCurrentUser({});
-    setErrorMessage(false)
+    setErrorMessage(false);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main loggedIn={loggedIn}/>} />
+        <Route path="/" element={<Main loggedIn={loggedIn} />} />
         <Route
           path="/movies"
           element={

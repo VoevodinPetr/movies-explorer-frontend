@@ -35,8 +35,12 @@
 
 .login__form {
   width: 100%;
+}
+
+.login__form-field {
   display: flex;
   flex-direction: column;
+  margin-bottom: 24px;
 }
 
 .login__input {
@@ -45,7 +49,6 @@
   border: none;
   border-bottom: 1px solid #424242;
   background-color: transparent;
-  margin-bottom: 24px;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -64,7 +67,6 @@
   line-height: 12px;
   color: #8b8b8b;
 }
-
 
 .login__input-error {
   font-style: normal;
@@ -109,8 +111,8 @@
 }
 
 .login__button_disabled {
-  background: #F9F9F9;
-  color: #A0A0A0;
+  background: #f9f9f9;
+  color: #a0a0a0;
 }
 
 @media (max-width: 768px) {

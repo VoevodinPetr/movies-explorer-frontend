@@ -1,3 +1,4 @@
+import { BASE_URL } from "./config";
 class MainApi {
   constructor({ address, headers }) {
     this._address = address;
@@ -49,7 +50,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  address: "https://supermovies1.nomoredomains.monster",
+  address: BASE_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

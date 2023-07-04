@@ -1,4 +1,4 @@
-import { MOVIES_API } from "./constants";
+import { MOVIES_API } from "./config";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);

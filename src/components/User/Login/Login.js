@@ -18,6 +18,7 @@ function Login({ handleLogin, errorMessage }) {
         <Logo />
         <h1 className="login__title">Рады видеть!</h1>
         <form className="login__form" onSubmit={handleSubmit} noValidate>
+        <div className="login__form-field">
           <label className="login-main__title">E-mail</label>
           <input
             className="login__input"
@@ -32,6 +33,8 @@ function Login({ handleLogin, errorMessage }) {
           {errors?.email && (
             <span className="login__input-error">{errors.email}</span>
           )}
+          </div>
+          <div className="login__form-field">
           <label className="login-main__title">Пароль</label>
           <input
             className="login__input"
@@ -47,6 +50,7 @@ function Login({ handleLogin, errorMessage }) {
             <span className="login__input-error">{errors.password}</span>
           )}
           <span className="login__input-error">{errorMessage}</span>
+          </div>
           <button
             className={
               isValid
@@ -60,7 +64,7 @@ function Login({ handleLogin, errorMessage }) {
           </button>
         </form>
         <p className="login__text">
-          Ещё не зарегистрированы?
+          Ещё не зарегистрированы?&nbsp;
           <Link to="/signup" className="login__link hover-link">
             Регистрация
           </Link>
