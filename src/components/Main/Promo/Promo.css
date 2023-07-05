@@ -27,7 +27,6 @@
 
 .promo__subtitle {
   width: 310px;
-  text-align: center;
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
@@ -71,13 +70,7 @@
     margin: 48px 0 22px 0;
   }
 
-  .promo__subtitle1 {
-    display: flex;
-    max-width: 260px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
+  .promo__subtitle {
     text-align: center;
   }
 }

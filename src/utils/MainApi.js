@@ -1,8 +1,7 @@
 import { BASE_URL } from "./config";
 class MainApi {
-  constructor({ address, headers }) {
+  constructor({ address }) {
     this._address = address;
-    this._headers = headers;
   }
 
   _checkResponse(res) {
@@ -14,8 +13,10 @@ class MainApi {
 
   getMovies() {
     return fetch(`${this._address}/movies`, {
-      headers: this._headers,
-      credentials: "include",
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
     }).then(this._checkResponse);
   }
 
@@ -23,7 +24,10 @@ class MainApi {
     return fetch(`${this._address}/movies`, {
       method: "POST",
       credentials: "include",
-      headers: this._headers,
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
       body: JSON.stringify({
         country: movie.country || "Нет данных",
         director: movie.director,
@@ -44,18 +48,16 @@ class MainApi {
     return fetch(`${this._address}/movies/${movieId}`, {
       method: "DELETE",
       credentials: "include",
-      headers: this._headers,
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     }).then(this._checkResponse);
   }
 }
 
 const mainApi = new MainApi({
   address: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
 });
 
 export default mainApi;

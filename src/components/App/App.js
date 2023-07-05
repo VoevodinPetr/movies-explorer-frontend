@@ -32,7 +32,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [isMessageProfile, setIsMessageProfile] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
@@ -64,17 +64,18 @@ function App() {
         .catch((err) => {
           console.error(`Данные пользователя не получены: ${err}`);
         });
+    
     }
   }, [loggedIn]);
 
   const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-
+    const jwt = localStorage.getItem("token");
     if (jwt) {
       auth
         .checkToken(jwt)
         .then((res) => {
           if (res) {
+            setCurrentUser(res);
             setLoggedIn(true);
             navigate(location.pathname);
           }
@@ -152,7 +153,7 @@ function App() {
     mainApi
       .addMovie(movie)
       .then((movieData) => {
-        setSavedMovies([...savedMovies, movieData]);
+        setSavedMovies([movieData, ...savedMovies]);
       })
       .catch((err) => {
         console.log(err.message);
@@ -231,17 +232,16 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("token");
-   
-    navigate("/");
+    setCurrentUser(false);
     setLoggedIn(false);
-    setCurrentUser({});
     setErrorMessage(false);
+    navigate("/");
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main loggedIn={loggedIn} />} />
+        <Route path="/" element={<Main />} />
         <Route
           path="/movies"
           element={

@@ -4,7 +4,7 @@ import "./Register.css";
 import Logo from "../../common/Logo/Logo";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
-function Register({ onRegister, isRegisterMessage }) {
+function Register({ onRegister, errorMessage }) {
   const { handleChange, values, errors, isValid } = useFormAndValidation();
 
   function handleSubmit(e) {
@@ -68,7 +68,7 @@ function Register({ onRegister, isRegisterMessage }) {
             {errors?.password && (
               <span className="register__input-error">{errors.password}</span>
             )}
-            <span className="register__input-error">{isRegisterMessage}</span>
+            <span className="register__input-error">{errorMessage}</span>
           </div>
           <button
             className={

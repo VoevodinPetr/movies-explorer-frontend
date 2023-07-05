@@ -152,9 +152,6 @@
   .profile__form {
     margin-top: 96px;
   }
-  .profile__button {
-    margin-bottom: 210px;
-  }
 }
 
 @media (max-width: 500px) {
@@ -170,7 +167,6 @@
   .profile__button {
     font-size: 12px;
     line-height: 15px;
-    margin-bottom: 379px;
   }
 
   .profile__link-button {

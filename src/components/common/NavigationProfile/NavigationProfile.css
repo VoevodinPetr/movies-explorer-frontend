@@ -34,6 +34,9 @@
 	width: 100%; 
 }
 
+.active {
+  color: #3ddc84;
+}
 
 .navigation__link_loggedin {
   margin-right: 20px;
