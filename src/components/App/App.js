@@ -32,7 +32,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [errorMessage, setErrorMessage] = useState(false);
   const [isMessageProfile, setIsMessageProfile] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
@@ -231,12 +231,14 @@ function App() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
     
-    setCurrentUser(false);
+    setCurrentUser({});
     setLoggedIn(false);
     setErrorMessage(false);
     navigate("/");
+    setMovies([]);
+    setSavedMovies([]);
   }
 
   return (
