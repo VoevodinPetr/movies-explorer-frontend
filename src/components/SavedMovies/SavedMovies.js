@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Header from "../common/Header/Header";
 import NavigationProfile from "../common/NavigationProfile/NavigationProfile";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
@@ -35,7 +36,12 @@ function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
 
   return (
     <>
-      <NavigationProfile />
+      <Header
+        color={"header__theme_black"}
+        location={"header__container_movies"}
+      >
+        <NavigationProfile />
+      </Header>
       <main>
         <SearchForm handleSearch={handleSearch} defaultValue="" />
 

@@ -1,10 +1,20 @@
-.header {
+.header__container {
   padding-top: 18px;
   padding-bottom: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #073042;
 }
 
+.header__theme_black {
+  background: #202020;
+}
+
+.header__theme_blue {
+  background-color: #073042;
+}
+
+.header__container_movies {
+  justify-content: space-between;
+}
 

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./NavigationProfile.css";
 import { NavLink, Link } from "react-router-dom";
-import Logo from "../Logo/Logo";
 
 function NavigationProfile() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -15,8 +14,7 @@ function NavigationProfile() {
   }
 
   return (
-    <div className="navigation-profile__header section">
-      <Logo />
+    <>
       <div className={`${isPopupOpen ? "overlay" : ""}`}>
         <nav
           className={`navigation-profile navigation__popup ${
@@ -62,7 +60,7 @@ function NavigationProfile() {
         className="navigation__popup-button navigation__popup-button_burger hover-button"
         onClick={handlePopupOpen}
       ></button>
-    </div>
+    </>
   );
 }
 

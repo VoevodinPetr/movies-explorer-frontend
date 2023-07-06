@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-
+import Header from "../../common/Header/Header";
 import NavigationProfile from "../../common/NavigationProfile/NavigationProfile";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
@@ -45,7 +45,12 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
 
   return (
     <>
-      <NavigationProfile />
+      <Header
+        color={"header__theme_black"}
+        location={"header__container_movies"}
+      >
+        <NavigationProfile />
+      </Header>
       <section className="profile">
         <div className="profile__main">
           <h2 className="profile__title">Привет, {currentUser.name}!</h2>

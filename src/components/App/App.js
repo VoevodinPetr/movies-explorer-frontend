@@ -232,6 +232,7 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("token");
+    
     setCurrentUser(false);
     setLoggedIn(false);
     setErrorMessage(false);
@@ -241,7 +242,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main loggedIn={loggedIn}/>} />
         <Route
           path="/movies"
           element={

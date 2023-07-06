@@ -1,4 +1,5 @@
 import "./Movies.css";
+import Header from "../common/Header/Header";
 import NavigationProfile from "../common/NavigationProfile/NavigationProfile";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
@@ -17,7 +18,12 @@ function Movies({
 }) {
   return (
     <>
-      <NavigationProfile />
+      <Header
+        color={"header__theme_black"}
+        location={"header__container_movies"}
+      >
+        <NavigationProfile />
+      </Header>
       <main>
         <SearchForm
           handleSearch={handleSearch}

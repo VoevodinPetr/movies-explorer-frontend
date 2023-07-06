@@ -66,6 +66,8 @@
 .about-me__photo {
   border-radius: 10px;
   grid-area: photo;
+  width: 270px;
+  height: 327px;
 }
 
 @media screen and (max-width: 768px) {

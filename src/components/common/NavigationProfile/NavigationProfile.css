@@ -1,7 +1,7 @@
 .navigation-profile__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   background: #202020;
   padding-top: 18px;
   padding-bottom: 18px;
