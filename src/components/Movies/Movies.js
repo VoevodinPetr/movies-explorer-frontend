@@ -18,13 +18,10 @@ function Movies({
 }) {
   return (
     <>
-      <Header
-        color={"header__theme_black"}
-        location={"header__container_movies"}
-      >
+      <Header color={"header__theme_black"}>
         <NavigationProfile />
       </Header>
-      <main>
+      <main className="main">
         <SearchForm
           handleSearch={handleSearch}
           defaultValue={defaultSearchValue}

@@ -22,6 +22,7 @@ import {
   MOVIES_LOAD_0,
   MOVIES_LOAD_2,
   MOVIES_LOAD_3,
+  SHORT_FILM_DURATION,
 } from "../../utils/constants";
 import { REQUEST_ERRORS } from "../../utils/constants";
 
@@ -53,8 +54,11 @@ function App() {
         .then((savedMovies) => {
           setSavedMovies(savedMovies);
         })
+        .then(() => {
+          searchMovie("");
+        })
         .catch((err) => {
-          console.log(err);
+          console.log(`Ошибка: ${err.status}`);
         });
       auth
         .getUserInfo()
@@ -62,9 +66,8 @@ function App() {
           setCurrentUser(data);
         })
         .catch((err) => {
-          console.error(`Данные пользователя не получены: ${err}`);
+          console.log(`Ошибка: ${err.status}`);
         });
-    
     }
   }, [loggedIn]);
 
@@ -81,13 +84,13 @@ function App() {
           }
         })
         .catch((err) => {
+          console.log(`Ошибка: ${err.status}`);
           handleLogout();
-          console.error(err);
         });
     }
   };
 
-  function searchMovie(keyword, isShortFilms) {
+  function searchMovie(keyword, isShortFilms = false) {
     setLoading(true);
     moviesApi
       .getApiMovies()
@@ -96,7 +99,9 @@ function App() {
           item.nameRU.toLowerCase().includes(keyword.toLowerCase())
         );
         const foundMovies = isShortFilms
-          ? searchedMovies.filter((item) => item.duration <= 40)
+          ? searchedMovies.filter(
+              (item) => item.duration <= SHORT_FILM_DURATION
+            )
           : searchedMovies;
         localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
         localStorage.setItem("searchMovieName", keyword);
@@ -105,7 +110,7 @@ function App() {
         handleResize();
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(`Ошибка: ${err.status}`);
         setLoading(false);
         setServerError(true);
       });
@@ -152,11 +157,11 @@ function App() {
   function handleMovieSave(movie) {
     mainApi
       .addMovie(movie)
-      .then((movieData) => {
-        setSavedMovies([movieData, ...savedMovies]);
+      .then((data) => {
+        setSavedMovies([...savedMovies, data]);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(`Ошибка: ${err.status}`);
       });
   }
 
@@ -172,7 +177,7 @@ function App() {
         setSavedMovies(savedMovies.filter((c) => c._id !== deleteCard._id));
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(`Ошибка: ${err.status}`);
       });
   }
 
@@ -211,7 +216,7 @@ function App() {
       })
       .catch((err) => {
         setErrorMessage(REQUEST_ERRORS.ERROR_401);
-        console.log(err.message);
+        console.log(`Ошибка: ${err.status}`);
       });
   }
 
@@ -223,7 +228,8 @@ function App() {
         setCurrentUser(data);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(`Ошибка: ${err.status}`);
+        setIsMessageProfile(REQUEST_ERRORS.ERROR_UPDATE);
       })
       .finally(() => {
         setTimeout(() => setIsMessageProfile(false), 1000);
@@ -232,7 +238,6 @@ function App() {
 
   function handleLogout() {
     localStorage.clear();
-    
     setCurrentUser({});
     setLoggedIn(false);
     setErrorMessage(false);
@@ -242,70 +247,73 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <Routes>
-        <Route path="/" element={<Main loggedIn={loggedIn}/>} />
-        <Route
-          path="/movies"
-          element={
-            <ProtectedRoute loggedIn={loggedIn}>
-              <Movies
-                handleSearch={handleSearch}
-                defaultSearchValue={
-                  localStorage.getItem("searchMovieName") || ""
-                }
-                cards={movies}
-                handleShowMore={handleShowMore}
-                isSaved={isSaved}
-                onMovieSave={handleMovieSave}
-                onMovieDelete={handleMovieDelete}
-                serverError={serverError}
-                loading={loading}
-              ></Movies>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/saved-movies"
-          element={
-            <ProtectedRoute loggedIn={loggedIn}>
-              <SavedMovies
-                loading={loading}
-                cards={savedMovies}
-                isSaved={isSaved}
-                onMovieDelete={handleMovieDelete}
-                serverError={serverError}
-              ></SavedMovies>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute loggedIn={loggedIn}>
-              <Profile
-                onUpdateUser={onUpdateUser}
-                handleLogout={handleLogout}
-                isMessageProfile={isMessageProfile}
-              />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <Register onRegister={onRegister} errorMessage={errorMessage} />
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            <Login handleLogin={handleLogin} errorMessage={errorMessage} />
-          }
-        />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </CurrentUserContext.Provider>
+    <div className="content">
+      <CurrentUserContext.Provider value={currentUser}>
+        <Routes>
+          <Route path="/" element={<Main loggedIn={loggedIn} />} />
+          <Route
+            path="/movies"
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Movies
+                  handleSearch={handleSearch}
+                  defaultSearchValue={
+                    localStorage.getItem("searchMovieName") || ""
+                  }
+                  cards={movies}
+                  handleShowMore={handleShowMore}
+                  isSaved={isSaved}
+                  onMovieSave={handleMovieSave}
+                  onMovieDelete={handleMovieDelete}
+                  serverError={serverError}
+                  loading={loading}
+                ></Movies>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/saved-movies"
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <SavedMovies
+                  handleSearch={handleSearch}
+                  loading={loading}
+                  cards={savedMovies}
+                  isSaved={isSaved}
+                  onMovieDelete={handleMovieDelete}
+                  serverError={serverError}
+                ></SavedMovies>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Profile
+                  onUpdateUser={onUpdateUser}
+                  handleLogout={handleLogout}
+                  isMessageProfile={isMessageProfile}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <Register onRegister={onRegister} errorMessage={errorMessage} />
+            }
+          />
+          <Route
+            path="/signin"
+            element={
+              <Login handleLogin={handleLogin} errorMessage={errorMessage} />
+            }
+          />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </CurrentUserContext.Provider>
+    </div>
   );
 }
 

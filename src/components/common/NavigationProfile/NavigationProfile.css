@@ -1,12 +1,3 @@
-.navigation-profile__header {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  background: #202020;
-  padding-top: 18px;
-  padding-bottom: 18px;
-}
-
 .navigation-profile {
   display: flex;
   align-items: center;
@@ -19,19 +10,19 @@
 }
 
 .navigation__link::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	display: block;
-	width: 0;
-	height: 2px;
-	background-color: #fff;
-	transition: width 0.3s ease-out;
+  content: "";
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease-out;
 }
 
 .navigation__link:hover::after,
 .navigation__link:focus::after {
-	width: 100%; 
+  width: 100%;
 }
 
 .active {
@@ -119,7 +110,7 @@
 
   .navigation__popup-button_burger {
     background-image: url(../../../images/icon-burger.svg);
-    background-color: #202020;
+    background-color: transparent;
     width: 44px;
     height: 44px;
   }

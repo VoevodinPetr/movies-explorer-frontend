@@ -8,26 +8,20 @@ import "./Profile.css";
 function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
   const currentUser = useContext(CurrentUserContext);
   const [isEditInput, setIsEditInput] = useState(true);
-  const controlInput = useFormAndValidation();
-  const { nameErr, emailErr } = controlInput.errors;
-  const errorClassName = !controlInput.isValid
-    ? "profile__input-error profile__input-error_visible"
-    : "profile__input-error";
-
+  const { handleChange, values, errors, isValid, resetForm } = useFormAndValidation(currentUser);
+  
   const saveInput = (e) => {
     e.preventDefault();
     setIsEditInput((state) => !state);
   };
 
   let disableUserCurrentCheck =
-    (currentUser.name === controlInput?.values?.name &&
-      typeof controlInput?.values?.email === "undefined") ||
-    (currentUser.email === controlInput?.values?.email &&
-      typeof controlInput?.values?.email === "undefined");
+    currentUser.name === values?.name &&
+    currentUser.email === values?.email;
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { name, email } = controlInput.values;
+    const { name, email } = values;
     if (!name) {
       onUpdateUser(currentUser.name, email);
     } else if (!email) {
@@ -36,7 +30,7 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
       onUpdateUser(name, email);
     }
     setTimeout(() => setIsEditInput((state) => !state), 1000);
-    controlInput.resetForm();
+    resetForm();
   }
 
   let classNameMessageBtn = isMessageProfile
@@ -66,12 +60,14 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
                 required="{true}"
                 placeholder={currentUser.name}
                 pattern="[A-Za-zА-Яа-яЁё\s-]+"
-                onChange={controlInput.handleChange}
-                value={controlInput?.values?.name ?? currentUser.name}
+                onChange={handleChange}
+                value={values?.name || ""}
                 {...(!isEditInput ? {} : { disabled: true })}
               />
             </div>
-            <span className={errorClassName}>{nameErr}</span>
+            {errors?.name && (
+              <span className="profile__input-error">{errors.name}</span>
+            )}
             <div className="profile__field">
               <label className="profile__label">E-mail</label>
               <input
@@ -80,12 +76,14 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
                 name="email"
                 placeholder={currentUser.email}
                 pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                onChange={controlInput.handleChange}
-                value={controlInput?.values?.email ?? currentUser.email}
+                onChange={handleChange}
+                value={values?.email || ""}
                 {...(!isEditInput ? {} : { disabled: true })}
               />
             </div>
-            <span className={errorClassName}>{emailErr}</span>
+            {errors?.email && (
+              <span className="profile__input-error">{errors.email}</span>
+            )}
 
             {!isEditInput && (
               <>
@@ -94,7 +92,7 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
                 </span>
                 <button
                   className="profile__save-button hover-button"
-                  disabled={disableUserCurrentCheck || !controlInput.isValid}
+                  disabled={disableUserCurrentCheck || !isValid}
                 >
                   Сохранить
                 </button>

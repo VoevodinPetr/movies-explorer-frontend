@@ -47,7 +47,7 @@
   height: 100%;
   z-index: 10;
   padding: 20px;
-  min-height: 300px;
+  min-height: 50vh;
   background: #222222;
 }
 

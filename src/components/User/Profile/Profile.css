@@ -35,8 +35,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0 16px;
-  margin-bottom: 17px;
+  padding: 17px 0 16px;
   border-bottom: 1px solid #424242;
 }
 
@@ -105,17 +104,10 @@
   line-height: 12px;
   color: #ee3465;
   margin-top: 6px;
-  opacity: 1;
-  visibility: hidden;
-}
-
-.profile__input-error_visible {
-  opacity: 0;
-  visibility: visible;
 }
 
 .profile__message {
-  color: white;
+  color: #3456f3;
   text-align: center;
   font-size: 14px;
 }

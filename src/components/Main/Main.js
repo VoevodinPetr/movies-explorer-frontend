@@ -1,3 +1,4 @@
+import "./Main.css";
 import Header from "../common/Header/Header";
 import Promo from "../Main/Promo/Promo";
 import AboutProject from "../Main/AboutProject/AboutProject";
@@ -12,10 +13,7 @@ function Main({ loggedIn }) {
   return (
     <>
       {loggedIn ? (
-        <Header
-          color={"header__theme_blue"}
-          location={"header__container_movies"}
-        >
+        <Header color={"header__theme_blue"}>
           <NavigationProfile />
         </Header>
       ) : (

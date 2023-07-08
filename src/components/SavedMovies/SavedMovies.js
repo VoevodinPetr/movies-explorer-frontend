@@ -4,15 +4,16 @@ import NavigationProfile from "../common/NavigationProfile/NavigationProfile";
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../common/Footer/Footer";
+import {SHORT_FILM_DURATION} from '../../utils/constants';
 
 function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [movies, setFilteredMovies] = useState([]);
   function handleSearch(keyword, isShortFilms) {
     const filteredMovies = cards.filter((item) =>
       item.nameRU.toLowerCase().includes(keyword.toLowerCase())
     );
     if (isShortFilms) {
-      setFilteredMovies(filteredMovies.filter((item) => item.duration <= 40));
+      setFilteredMovies(filteredMovies.filter((item) => item.duration <= SHORT_FILM_DURATION));
     } else {
       setFilteredMovies(filteredMovies);
     }
@@ -24,7 +25,7 @@ function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
 
   useEffect(() => {
     setFilteredMovies(
-      filteredMovies.filter((movie) =>
+      cards.filter((movie) =>
         cards.some((card) => movie.movieId === card.movieId)
       )
     );
@@ -36,17 +37,14 @@ function SavedMovies({ cards, isSaved, onMovieDelete, serverError, loading }) {
 
   return (
     <>
-      <Header
-        color={"header__theme_black"}
-        location={"header__container_movies"}
-      >
+      <Header color={"header__theme_black"}>
         <NavigationProfile />
       </Header>
-      <main>
+      <main className="main">
         <SearchForm handleSearch={handleSearch} defaultValue="" />
 
         <MoviesCardList
-          cards={filteredMovies}
+          cards={movies}
           isSaved={isSaved}
           isOnlySaved={true}
           onMovieDelete={onMovieDelete}
