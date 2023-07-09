@@ -5,19 +5,24 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "./Profile.css";
 
-function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
+function Profile({
+  onUpdateUser,
+  handleLogout,
+  isMessageProfile,
+  errorMessage,
+}) {
   const currentUser = useContext(CurrentUserContext);
   const [isEditInput, setIsEditInput] = useState(true);
-  const { handleChange, values, errors, isValid, resetForm } = useFormAndValidation(currentUser);
-  
+  const { handleChange, values, errors, isValid, resetForm } =
+    useFormAndValidation(currentUser);
+
   const saveInput = (e) => {
     e.preventDefault();
     setIsEditInput((state) => !state);
   };
 
   let disableUserCurrentCheck =
-    currentUser.name === values?.name &&
-    currentUser.email === values?.email;
+    currentUser.name === values?.name && currentUser.email === values?.email;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -29,8 +34,8 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
     } else {
       onUpdateUser(name, email);
     }
-    setTimeout(() => setIsEditInput((state) => !state), 1000);
     resetForm();
+    setTimeout(() => setIsEditInput((state) => !state), 1000);
   }
 
   let classNameMessageBtn = isMessageProfile
@@ -81,6 +86,8 @@ function Profile({ onUpdateUser, handleLogout, isMessageProfile }) {
                 {...(!isEditInput ? {} : { disabled: true })}
               />
             </div>
+
+            <span className="profile__input-error">{errorMessage}</span>
             {errors?.email && (
               <span className="profile__input-error">{errors.email}</span>
             )}

@@ -1,6 +1,10 @@
 import { BASE_URL } from "./config";
+import { REQUEST_ERRORS } from "./constants";
 
 const checkResponse = (res) => {
+  if (res.status === 409) {
+    return Promise.reject(REQUEST_ERRORS.ERROR_409);
+  }
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
 

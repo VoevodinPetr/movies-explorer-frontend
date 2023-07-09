@@ -54,9 +54,6 @@ function App() {
         .then((savedMovies) => {
           setSavedMovies(savedMovies);
         })
-        .then(() => {
-          searchMovie("");
-        })
         .catch((err) => {
           console.log(`Ошибка: ${err.status}`);
         });
@@ -90,7 +87,7 @@ function App() {
     }
   };
 
-  function searchMovie(keyword, isShortFilms = false) {
+  function searchMovie(keyword, isShortFilms) {
     setLoading(true);
     moviesApi
       .getApiMovies()
@@ -199,6 +196,7 @@ function App() {
         err.status !== 400
           ? setErrorMessage(REQUEST_ERRORS.ERROR_409)
           : setErrorMessage(REQUEST_ERRORS.ERROR_DEFAULT);
+        setTimeout(() => setErrorMessage(false), 3000);
       });
   }
 
@@ -215,8 +213,9 @@ function App() {
         });
       })
       .catch((err) => {
-        setErrorMessage(REQUEST_ERRORS.ERROR_401);
         console.log(`Ошибка: ${err.status}`);
+        setErrorMessage(REQUEST_ERRORS.ERROR_401);
+        setTimeout(() => setErrorMessage(false), 3000);
       });
   }
 
@@ -225,25 +224,27 @@ function App() {
       .updateUserInfo(name, email)
       .then((data) => {
         setIsMessageProfile(true);
+        setTimeout(() => setIsMessageProfile(false), 2000);
         setCurrentUser(data);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err.status}`);
-        setIsMessageProfile(REQUEST_ERRORS.ERROR_UPDATE);
-      })
-      .finally(() => {
-        setTimeout(() => setIsMessageProfile(false), 1000);
+        setErrorMessage(err);
+        setTimeout(() => setErrorMessage(false), 2000);
       });
   }
 
   function handleLogout() {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("foundMovies");
+    localStorage.removeItem("searchMovieName");
+    localStorage.removeItem("shortFilms");
     setCurrentUser({});
     setLoggedIn(false);
     setErrorMessage(false);
-    navigate("/");
     setMovies([]);
     setSavedMovies([]);
+    navigate("/");
   }
 
   return (
@@ -277,6 +278,9 @@ function App() {
               <ProtectedRoute loggedIn={loggedIn}>
                 <SavedMovies
                   handleSearch={handleSearch}
+                  defaultSearchValue={
+                    localStorage.getItem("searchMovieName") || ""
+                  }
                   loading={loading}
                   cards={savedMovies}
                   isSaved={isSaved}
@@ -294,6 +298,7 @@ function App() {
                   onUpdateUser={onUpdateUser}
                   handleLogout={handleLogout}
                   isMessageProfile={isMessageProfile}
+                  errorMessage={errorMessage}
                 />
               </ProtectedRoute>
             }
