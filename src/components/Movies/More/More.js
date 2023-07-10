@@ -1,13 +1,17 @@
-import './More.css';
+import "./More.css";
 
-function More() {
-    return (
-        <section className="more section2">
-        <button className="more__button hover-button" type="button">
-          Ещё
-        </button>
-      </section> 
-    )
+function More({ handleShowMore }) {
+  return (
+    <section className="more section2">
+      <button
+        className="more__button hover-button"
+        onClick={handleShowMore}
+        type="button"
+      >
+        Ещё
+      </button>
+    </section>
+  );
 }
 
-export default More
+export default More;

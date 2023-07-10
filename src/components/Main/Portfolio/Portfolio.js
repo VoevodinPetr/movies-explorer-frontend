@@ -7,7 +7,7 @@ function Portfolio() {
       <h2 className="portfolio__title">Портфолио</h2>
       <ul className="portfolio__lists">
         <li className="portfolio__list">
-          <a className="portfolio__link hover-link" href="https://github.com/VoevodinPetr/how-to-learn/tree/gh-pages" target="_blank" rel="noreferrer">
+          <a className="portfolio__link hover-link" href="https://voevodinpetr.github.io/how-to-learn/index.html" target="_blank" rel="noreferrer">
             Статичный сайт
             <img className="portfolio__image" src={arrow} alt="стрелка" />
           </a>

@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && scp -r ./build/* demonlefilm1@51.250.90.232:/home/demonle01/movies-explorer-frontend/frontend-build"
   },
   "eslintConfig": {
     "extends": [

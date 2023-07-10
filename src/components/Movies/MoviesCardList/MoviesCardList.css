@@ -21,9 +21,9 @@
 }
 
 @media screen and (max-width: 892px) {
-    .movie-card-list {
-        grid-template-columns: repeat(auto-fit, 300px);
-        row-gap: 14px;
-        padding-top: 50px;
-    }
+  .movie-card-list {
+    grid-template-columns: repeat(auto-fit, 300px);
+    row-gap: 14px;
+    padding-top: 50px;
+  }
 }
